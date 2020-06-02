@@ -87,8 +87,12 @@ void ManRobot::resetPID(int link)
 
 void ManRobot::setMaxSpeed(int link, float speed)
 {
-	client->simxSetObjectFloatParameter(link, 2017, speed, client->simxDefaultPublisher());
-	//не заработает, требуется сделать sim.resetDynamicObject(link)
+	//client->simxSetObjectFloatParameter(link, 2017, speed, client->simxDefaultPublisher());
+
+	std::tuple <int, float > args(link, speed);
+	std::stringstream packedArgs;
+	msgpack::pack(packedArgs, args);
+	std::vector<msgpack::object>* reply=client->simxCallScriptFunction("remoteResetDyn@ManIRS_junior_robot", "sim.scripttype_customizationscript", packedArgs.str().c_str(), packedArgs.str().size(), client->simxServiceCall());
 }
 
 void ManRobot::getCameraImage(std::vector<msgpack::object>* msg)
@@ -98,6 +102,18 @@ void ManRobot::getCameraImage(std::vector<msgpack::object>* msg)
 	{
 		cam_image=b0RemoteApi::readByteArray(msg, 2);
 	} 
+}
+
+void ManRobot::setCameraResolution(int x, int y)
+{
+	int resX = x;
+	int resY = y;
+	if (resX < 1) { resX = 1; }
+	if (resX > 1024) { resX = 1024; }
+	if (resY < 1) { resY = 1; }
+	if (resY > 1024) { resY = 1024; }
+	client->simxSetObjectIntParameter(cam, 1002, resX, client->simxDefaultPublisher());
+	client->simxSetObjectIntParameter(cam, 1003, resY, client->simxDefaultPublisher());
 }
 
 void ManRobot::getXEnc(std::vector<msgpack::object>* msg)

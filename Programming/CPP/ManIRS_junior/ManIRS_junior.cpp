@@ -39,8 +39,15 @@ void init()
     //robot.setPID(robot.linkX, kp, ki, kd);
     //robot.resetPID(robot.linkX);
 
+    //float speed = 100; //max speed in mm/s or deg/s
+    //robot.setMaxSpeed(robot.linkX, speed);
+
     //robot.grapObject();    //включить схват
     //robot.releaseObject(); //выключить схват
+
+    //int resX = 2; //X resolution of RoboCamera in pixels 1...1024
+    //int resY = 2; //Y resolution of RoboCamera in pixels 1...1024
+    //robot.setCameraResolution(resX, resY);
 
     //std::string img = robot.cam_image; //кадр с камеры возвращается как строка длинной 196608 символов
     //Каждые три символа надо переводить в byte/int и обрабатывать как RGB-компоненты одного пикселя

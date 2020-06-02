@@ -55,7 +55,10 @@ class ManRobot:
 		return errPos
 	
 	def setPositions(self, posX=0, posY=0, posZ=0):
-		return self.setPosX(posX) and self.setPosY(posY) and self.setPosZ(posZ)
+		self.setPosX(posX)
+		self.setPosY(posY)
+		self.setPosZ(posZ)
+        #return self.setPosX(posX) and self.setPosY(posY) and self.setPosZ(posZ)
 	
 	def grapObject(self):
 		errSig=self.client.simxSetIntSignal('succtionActive', 1, self.client.simxDefaultPublisher() )
@@ -69,6 +72,16 @@ class ManRobot:
 		if msg[0] and self.__simState>0:
 			self.cam_image=msg[2]
 	
+	def setCameraResolution(self, x, y):
+		resX=x
+		resY=y
+		if resX<1: resX=1
+		if resX>1024: resX=1024
+		if resY<1: resY=1
+		if resY>1024: resY=1024
+		errParX=self.client.simxSetObjectIntParameter(self.cam, 1002, resX, self.client.simxDefaultPublisher() )
+		errParY=self.client.simxSetObjectIntParameter(self.cam, 1003, resY, self.client.simxDefaultPublisher() )
+	
 	def setPID(self,link,kp,ki,kd):
 		self.client.simxSetObjectFloatParameter(link, 2002, kp, self.client.simxDefaultPublisher() )
 		self.client.simxSetObjectFloatParameter(link, 2003, ki, self.client.simxDefaultPublisher() )
@@ -76,10 +89,12 @@ class ManRobot:
 	
 	def resetPID(self,link):
 		self.setPID(link, 0.1,0,0)
-	
+		
 	def setMaxSpeed(self,link, speed):
-		self.client.simxSetObjectFloatParameter(link, 2017, speed, self.client.simxDefaultPublisher() )
-		#не заработает, требуется сделать sim.resetDynamicObject(link)
+		#self.client.simxSetObjectFloatParameter(link, 2017, speed, self.client.simxDefaultPublisher() )
+		args=[link, speed]
+		ret=self.client.simxCallScriptFunction('remoteResetDyn@ManIRS_junior_robot','sim.scripttype_customizationscript',args,self.client.simxServiceCall())
+		return ret
 		
 	def getSimTime(self, msg):
 		if msg[0] and self.__simState>0:

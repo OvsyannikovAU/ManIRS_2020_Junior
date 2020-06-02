@@ -1,5 +1,7 @@
 #include <iostream>
 #include "b0RemoteApi.h"
+//#include <msgpack.hpp>
+
 #pragma once
 class ManRobot
 {
@@ -25,12 +27,12 @@ public:
 	void resetPID(int link);
 	void setMaxSpeed(int link, float speed);
 	void getCameraImage(std::vector<msgpack::object>* msg);
+	void setCameraResolution(int x, int y);
 	void getSimTime(std::vector<msgpack::object>* msg);
 	void getXEnc(std::vector<msgpack::object>* msg);
 	void getYEnc(std::vector<msgpack::object>* msg);
 	void getZEnc(std::vector<msgpack::object>* msg);
 	void getSimState(std::vector<msgpack::object>* msg);
-
 
 private:
 	b0RemoteApi *client = NULL;

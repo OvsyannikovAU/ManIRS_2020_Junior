@@ -36,9 +36,16 @@ with b0RemoteApi.RemoteApiClient('b0RemoteApi_pythonClient','b0RemoteApi_manirs'
         #robot.setPID(robot.linkX,kp,ki,kd) #установить параметры ПИД-регулятора для выбранного звена
         #robot.resetPID(robot.linkX)        #сбросить параметры ПИД-регулятора (kp=0.1, ki=0, kd=0)
 
+        #speed=100   #максимальная скорость звена в мм/с
+        #robot.setMaxSpeed(robot.linkX, speed) #установить максимальную скорость для выбранного звена
+        
         #robot.grapObject()    #включить схват
         #robot.releaseObject() #выключить схват
 
+        #resX=256 #Высота кадра в пикселях, диапазон от 1 до 1024 пикселей
+        #resY=256 #Ширина кадра в пикселях, диапазон от 1 до 1024 пикселей
+        #robot.setCameraResolution(resX, resY) #установить разрешение камеры робота
+        
         #img=robot.cam_image
         time.time()
         

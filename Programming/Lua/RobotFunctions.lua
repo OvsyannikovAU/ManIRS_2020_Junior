@@ -58,6 +58,18 @@ function getCameraField(x, x_size, y, y_size)
     return img
 end
 
+function setCameraResolution(x, y)
+	local resX=x
+	local resY=y
+	if resX<1 then resX=1 end
+	if resX>1024 then resY=1024 end
+	if resY<1 then resY=1 end
+	if resY>1024 then resY=1024 end
+	local resultX = sim.setObjectInt32Parameter(cam,sim.visionintparam_resolution_x, resX)
+	local resultY = sim.setObjectInt32Parameter(cam,sim.visionintparam_resolution_y, resY)
+	return resultX and resultY
+end
+
 function setPID(link,kp,ki,kd)
     sim.setObjectFloatParameter(link, sim.jointfloatparam_pid_p ,kp)
     sim.setObjectFloatParameter(link, sim.jointfloatparam_pid_i ,ki) 
@@ -69,6 +81,12 @@ function resetPID(link)
 end
 
 function setMaxSpeed(link, speed)
-    sim.setObjectFloatParameter(link, sim.jointfloatparam_upper_limit, speed)
+	local spd=speed
+	JT=sim.getJointType(link)
+    if JT>-1 then
+        if JT==sim.joint_revolute_subtype then spd=speed*math.pi/180 end
+        if JT==sim.joint_prismatic_subtype then spd=speed*0.001 end
+    end
+    sim.setObjectFloatParameter(link, sim.jointfloatparam_upper_limit, spd)
 	sim.resetDynamicObject(link)
 end
