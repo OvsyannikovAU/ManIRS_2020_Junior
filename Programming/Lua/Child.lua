@@ -10,6 +10,8 @@ function sysCall_threadmain()
     -- sim.setThreadAutomaticSwitch(false) -- disable automatic thread switches, wait in current step
     -- Do some one-step actions
     -- sim.switchThread() -- resume in next simulation step
+	
+	sim.stopSimulation()
 end
 
 function sysCall_cleanup()
