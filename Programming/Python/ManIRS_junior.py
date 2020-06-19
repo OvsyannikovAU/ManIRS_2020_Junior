@@ -61,8 +61,6 @@ with b0RemoteApi.RemoteApiClient('b0RemoteApi_pythonClient','b0RemoteApi_manirs'
         
     def simulationStepDone(msg):
         #бездействие
-        global step #выводим текущий шаг
-        print(step) #просто для демонстрации, можно отключить
         global doNextStep #а это обязательный участок кода
         doNextStep=True   #для синхронизации с основным потоком ниже
 	
